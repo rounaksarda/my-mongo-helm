@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: solr-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: solr
+  template:
+    metadata:
+      labels:
+        app: solr
+    spec:
+      containers:
+      - name: solr
+        image: solr:latest
+        ports:
+        - containerPort: 8983
+        volumeMounts:
+        - name: solr-data
+          mountPath: /opt/solr/server/solr/data
+      volumes:
+      - name: solr-data
+        persistentVolumeClaim:
+          claimName: solr-pvc
+
